@@ -1,5 +1,4 @@
-
-
+import cv2
 
 class RetinaImage:
 	# class constructor
@@ -33,15 +32,15 @@ class RetinaImage:
 		self.fovea = 'NONE' # default value
 		self.fovea_features = None
 
-		# image.legions = 'NONE' when legion features not processed
-		# image.legions = 'DONE' when legion features processed
-		self.legions = 'NONE' # default value
-		self.legion_features = None
+		# image.lesions = 'NONE' when lesion features not processed
+		# image.lesions = 'DONE' when lesion features processed
+		self.lesions = 'NONE' # default value
+		self.lesion_features = None
 
 	# end of constructor
 
-	def resize(self, width, height):
-		pass
+	def resize(self, height=640, width=480):
+		self.fundus = cv2.resize(self.fundus, (height, width)) 
 
 # -------------------- SETTERS AND GETTERS ---------------------
 
@@ -63,9 +62,9 @@ class RetinaImage:
 		self.fovea = 'DONE'
 		self.update_status()
 
-	def set_legion_features(self, features):
-		self.legion_features = features
-		self.vessels = 'DONE'
+	def set_lesion_features(self, features):
+		self.lesion_features = features
+		self.lesions = 'DONE'
 		self.update_status()
 
 	def get_vessel_features(self):
@@ -77,10 +76,10 @@ class RetinaImage:
 	def get_fovea_features(self):
 		pass
 
-	def get_legion_features(self):
+	def get_lesion_features(self):
 		pass
 
 	def update_status(self):
 		if self.vessels == 'DONE' and self.optic_nerve == 'DONE':
-			if self.fovea == 'DONE' and self.legions == 'DONE':
+			if self.fovea == 'DONE' and self.lesions == 'DONE':
 				self.set_status = 'PROCESSED'

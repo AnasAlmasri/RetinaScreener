@@ -123,3 +123,20 @@ body{
   cursor:pointer;
   font-size:15px;
 }
+
+.dropdown-container {
+    display: none;
+    background-color: #262626;
+    padding-left: 8px;
+}
+  
+  /* Optional: Style the caret down icon */
+.fa-caret-down {
+    float: right;
+    padding-right: 8px;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}

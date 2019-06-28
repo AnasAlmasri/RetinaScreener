@@ -9,7 +9,9 @@ class VesselExtractor:
 		self.image = image.fundus
 
 	def morph_extractor(self):
-		# adopted from https://github.com/getsanjeev/retina-features/blob/bb4c5cc70de65d09695aa9aadf34be290a8a5736/bloodvessels.py
+		# adapted from 
+		# https://github.com/getsanjeev/retina-features/blob/bb4c5cc70de65d09695aa9aadf34be290a8a5736/bloodvessels.py
+	
 		image = self.image
 		fundus = self.image
 		b,green_fundus,r = cv2.split(image)
