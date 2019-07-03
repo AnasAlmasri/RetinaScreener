@@ -69,7 +69,7 @@ class OpticNerveExtractor:
 
 		# convert the grayscale image to binary image
 		ret, thresh = cv2.threshold(img_candid,150,255,0)
-		 
+		
 		# calculate moments of binary image
 		M = cv2.moments(thresh)
 		 
@@ -77,7 +77,7 @@ class OpticNerveExtractor:
 		cX = int(M["m10"] / M["m00"])
 		cY = int(M["m01"] / M["m00"])
 		
-		img_output = img # original
+		img_output = self.image # original
 		# put text and highlight the center
 		cv2.circle(img_output, (cX, cY), 5, (0, 0, 0), -1)
 		cv2.putText(img_output, "Optic Nerve Centroid", (cX - 25, cY - 25),
