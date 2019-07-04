@@ -8,18 +8,17 @@
         <meta charset="utf-8">
         <title>Retina Screener</title>
 
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="{% static "js/default.js" %}"></script>
-
+        
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <link rel="stylesheet" href="{% static "css/default.css" %}">
          
     </head>
 
     <body>
-            
+        {% csrf_token %}
         <!--Navbar-->
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -109,9 +108,11 @@
                         <button type="button" class="btn btn-lg btn-primary btn-block">Link 1</a>
                         <a href="#">Link 2</a>
                     </div>
+                    <a href="/diagnosis">
                     <button type="button" class="btn btn-lg btn-primary btn-block">
                             Diagnosis
                     </button>
+                </a>
             </div>
 
             <div class="col-lg-9">

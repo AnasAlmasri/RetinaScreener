@@ -1,13 +1,33 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import JsonResponse
 from RetinaScrApp.framework_src.image_utils.RetinaImage import RetinaImage
 from RetinaScrApp.framework_src.extractors.VesselExtractor import VesselExtractor
 from RetinaScrApp.framework_src.extractors.OpticNerveExtractor import OpticNerveExtractor
 from RetinaScrApp.framework_src.extractors.LesionExtractor import ExudateExtractor
 import cv2
+import base64
 import matplotlib
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
+@csrf_exempt 
+def requestAjax(request):
+    print('called')
+    data = {
+        'is_valid': False,
+        }
+    if request.is_ajax():
+        message = request.POST.get('message')
+        if message == 'I want an AJAX response':
+            img_data = request.POST.get('img_data')
+            if img_data:
+                head, encoded = img_data.split(',')
+                decoded = base64.b64decode(encoded)
+                with open('static/images/original.jpg', 'wb+') as f:
+                    f.write(decoded)
+            data.update(is_valid=True)
+            data.update(response='This is the response you wanted')
+    return JsonResponse(data)
 
 def index(request):
     reset_processed_image()
@@ -15,6 +35,8 @@ def index(request):
     return render(request, 'RetinaScrApp/index.html', context=index_dict)
 
 def diagnosis(request):
+    reset_processed_image()
+    
     if request.method == 'POST':
         options = []
         options.append(request.POST.get('vessels', False)) 
@@ -46,7 +68,7 @@ def diagnosis(request):
         
         if not options[2] == False: # if fovea was checked
             pass
-        
+       
         if not options[3] == False: # if lesions was checked
             input_img = cv2.imread('static/images/original.jpg')
             retina = RetinaImage(input_img)
@@ -55,6 +77,9 @@ def diagnosis(request):
             retina.set_lesion_features(lesions)
             # save processed image
             cv2.imwrite('static/images/processed.jpg', retina.lesion_features)
+        
+        if not options[4] == False: # if 'full' was checked
+            pass
 
     diagnosis_dict = {'vessel_src':'images/processed.jpg'}
     return render(request, 'RetinaScrApp/diagnosis.html', context=diagnosis_dict)

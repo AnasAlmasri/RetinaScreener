@@ -17,14 +17,16 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from RetinaScrApp import views
+from RetinaScrApp.views import requestAjax
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('RetinaScrApp/', include('RetinaScrApp.urls')),
-    path('diagnosis', views.diagnosis),
-    path('admin/', admin.site.urls)
+    path('diagnosis', views.diagnosis, name='diagnosis'),
+    path('admin/', admin.site.urls),
+    path('data_ajax_request', requestAjax, name='data_ajax_request'),
 ]
 
 if settings.DEBUG:
