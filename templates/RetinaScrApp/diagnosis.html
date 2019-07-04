@@ -96,20 +96,40 @@
                 <!-- Sidebar col -->
                 <div class="col-lg-3 btn-group-vertical">
                     <!-- Sidebar -->
+                    <a href="/">
                     <button type="button" class="btn btn-lg btn-primary btn-block">
                             Upload
                     </button>
-                    <button type="button" class="btn btn-lg btn-primary btn-block dropdown-btn">
-                            Advanced
-                            <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-container">
-                        <button type="button" class="btn btn-lg btn-primary btn-block">Link 1</a>
-                        <a href="#">Link 2</a>
-                    </div>
+                    </a>
+                    
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <button type="button" class="btn btn-lg btn-primary btn-block dropdown-btn">
+                                Advanced <i class="fa fa-caret-down"></i>
+                        </button>
+                    </a>
+                    
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li>
+                            <a href="" style="text-decoration: none">
+                                <button type="button" class="btn-lg btn-block">
+                                    Customize
+                                </button>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" style="text-decoration: none">
+                                <button type="button" class="btn-lg btn-block">
+                                    New
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <a href="/diagnosis">
                     <button type="button" class="btn btn-lg btn-primary btn-block">
                             Diagnosis
                     </button>
+                    </a>
                     <!-- /Sidebar -->
 
                     <br><br>

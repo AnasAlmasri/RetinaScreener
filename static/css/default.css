@@ -98,6 +98,7 @@ body{
 {
   margin-bottom:15px;
 }
+
 .del
 {
   position:absolute;
@@ -141,5 +142,17 @@ body{
 img {
     max-width: 100%;
     max-height: 100%;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
 }
 
