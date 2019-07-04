@@ -93,7 +93,9 @@
         <br><br>
         <div class="container">
             <div class="row">
+                <!-- Sidebar col -->
                 <div class="col-lg-3 btn-group-vertical">
+                    <!-- Sidebar -->
                     <button type="button" class="btn btn-lg btn-primary btn-block">
                             Upload
                     </button>
@@ -108,6 +110,7 @@
                     <button type="button" class="btn btn-lg btn-primary btn-block">
                             Diagnosis
                     </button>
+                    <!-- /Sidebar -->
 
                     <br><br>
                     <!-- checkbox area -->
@@ -138,29 +141,84 @@
                             <input type="submit" class="btn btn-primary" value="Update" name="myform">
                         </form>
                     </div>
-
+                    <!-- /checkbox area -->
                 </div>
+                <!-- /Sidebar col -->
 
+                <!-- Results col -->
                 <div class="col-lg-9">
                     <!-- images row -->
                     <div class='row'>
-                        <!-- original image -->
-                        <div class="col-lg-6">
-                            <img src="{% static "images/original.jpg" %}" alt="Didn't show">
-                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                <th scope="col" class="text-center">Original</th>
+                                <th scope="col" class="text-center">Processed</th>
+                                </tr>
+                            </thead>
 
-                        <!-- processed image -->
-                        <div class="col-lg-6">
-                            <img src="{% static "images/processed.jpg" %}" alt="Didn't show">
-                        </div>
+                            <tbody>
+                                <tr>
 
+                                <!-- original image -->
+                                <td><img src="{% static "images/original.jpg" %}" alt="Didn't show">
+                                </td>
+
+                                <!-- processed image -->
+                                <td><img src="{% static "images/processed.jpg" %}" alt="Didn't show">
+                                </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
                         
                     </div>
 
                     <!-- results row -->
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Normal Range</th>
+                                    <th class="text-center">Analysis Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">Data</td>
+                                    <td class="text-center">Data</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">Data</td>
+                                    <td class="text-center">Data</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">Data</td>
+                                    <td class="text-center">Data</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">Data</td>
+                                    <td class="text-center">Data</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">Data</td>
+                                    <td class="text-center">Data</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">Data</td>
+                                    <td class="text-center">Data</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">Data</td>
+                                    <td class="text-center">Data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                 <!-- <img src="{% static "images/original.jpg" %}" alt="Didn't show"> -->
                 </div>
+                <!-- /Results col -->
 
             </div>
 

@@ -95,39 +95,43 @@
         
         <br><br>
         <div class="container">
-        <div class="row">
-            <div class="col-lg-3 btn-group-vertical">
-                    <button type="button" class="btn btn-lg btn-primary btn-block">
-                            Upload
-                    </button>
-                    <button type="button" class="btn btn-lg btn-primary btn-block dropdown-btn">
-                            Advanced
-                            <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-container">
-                        <button type="button" class="btn btn-lg btn-primary btn-block">Link 1</a>
-                        <a href="#">Link 2</a>
-                    </div>
-                    <a href="/diagnosis">
-                    <button type="button" class="btn btn-lg btn-primary btn-block">
-                            Diagnosis
-                    </button>
-                </a>
-            </div>
+            <div class="row">
+                <!-- Sidebar col -->
+                <div class="col-lg-3 btn-group-vertical">
+                        <button type="button" class="btn btn-lg btn-primary btn-block">
+                                Upload
+                        </button>
+                        <button type="button" class="btn btn-lg btn-primary btn-block dropdown-btn">
+                                Advanced
+                                <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-container">
+                            <button type="button" class="btn btn-lg btn-primary btn-block">Link 1</a>
+                            <a href="#">Link 2</a>
+                        </div>
+                        <a href="/diagnosis">
+                        <button type="button" class="btn btn-lg btn-primary btn-block">
+                                Diagnosis
+                        </button>
+                    </a>
+                </div>
+                <!-- /Sidebar col -->
 
-            <div class="col-lg-9">
-                    <div class="col-lg-4 imgUp">
-                        <div class="imagePreview"></div>
-                        <label class="btn btn-primary">
-                        Upload<input type="file" class="uploadFile img" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
-                        </label>
-                    </div><!-- col-2 -->
+                <!-- ImagePreview col -->
+                <div class="col-lg-9">
+                        <div class="col-lg-4 imgUp">
+                            <div class="imagePreview"></div>
+                            <label class="btn btn-primary">
+                            Upload<input type="file" class="uploadFile img" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                            </label>
+                        </div><!-- col-2 -->
 
-               <!-- <img src="{% static "images/original.jpg" %}" alt="Didn't show"> -->
-            </div>
+                <!-- <img src="{% static "images/original.jpg" %}" alt="Didn't show"> -->
+                </div>
+                <!-- /ImagePreview col -->
 
-        </div>
-        </div>
+            </div> <!--row-->
+        </div> <!--container div-->
         
     </body>
 </html>
