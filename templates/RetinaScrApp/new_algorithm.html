@@ -2,29 +2,30 @@
 {% load staticfiles %}
 
 <html>
-
     <head>
-
         <meta charset="utf-8">
         <title>Retina Screener</title>
 
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+        <script src="{% static "codemirror/lib/codemirror.js" %}"></script>
+        <script src="{% static "codemirror/mode/python/python.js" %}"></script>
+        <script src="{% static "codemirror/mode/shell/shell.js" %}"></script>
         <script src="{% static "js/default.js" %}"></script>
         
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <link rel="stylesheet" href="{% static "codemirror/lib/codemirror.css" %}">
+        <link rel="stylesheet" href="{% static "codemirror/theme/monokai.css" %}">
+        <link rel="stylesheet" href="{% static "codemirror/theme/liquibyte.css" %}">
         <link rel="stylesheet" href="{% static "css/default.css" %}">
-         
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> 
     </head>
 
     <body>
         {% csrf_token %}
         <!--Navbar-->
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
         <nav class="navbar navbar-cust" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -98,58 +99,68 @@
             <div class="row">
                 <!-- Sidebar col -->
                 <div class="col-lg-3 btn-group-vertical">
-                        <a href="/">
-                        <button type="button" class="btn btn-lg btn-primary btn-block">
-                                Upload
-                        </button>
-                        </a>
+                    <a href="">
+                    <button type="button" class="btn btn-lg btn-primary btn-block">
+                            Vessels
+                    </button>
+                    </a>
 
-                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                            <button type="button" class="btn btn-lg btn-primary btn-block dropdown-btn">
-                                    Advanced <i class="fa fa-caret-down"></i>
-                            </button>
-                        </a>
+                    <a href="">
+                    <button type="button" class="btn btn-lg btn-primary btn-block">
+                            Optic Nerve
+                    </button>
+                    </a>
 
-                        <ul class="collapse list-unstyled" id="pageSubmenu">
-                            <li>
-                                <a href="" style="text-decoration: none">
-                                    <button type="button" class="btn-lg btn-block">
-                                        Customize
-                                    </button>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/new_algorithm" style="text-decoration: none">
-                                    <button type="button" class="btn-lg btn-block">
-                                        New
-                                    </button>
-                                </a>
-                            </li>
-                        </ul>
+                    <a href="">
+                    <button type="button" class="btn btn-lg btn-primary btn-block">
+                            Fovea
+                    </button>
+                    </a>
 
-                        <a href="/diagnosis">
-                        <button type="button" class="btn btn-lg btn-primary btn-block">
-                                Diagnosis
-                        </button>
-                        </a>
+                    <a href="">
+                    <button type="button" class="btn btn-lg btn-primary btn-block">
+                            Lesions
+                    </button>
+                    </a>
                 </div>
                 <!-- /Sidebar col -->
 
-                <!-- ImagePreview col -->
+                <!-- CodeEditor col -->
                 <div class="col-lg-9">
-                        <div class="col-lg-4 imgUp">
-                            <div class="imagePreview"></div>
-                            <label class="btn btn-primary">
-                            Upload<input type="file" class="uploadFile img" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
-                            </label>
-                        </div><!-- col-2 -->
+                    <!-- buttons row -->
+                    <div class="row">
+                        <div class="btn-group" role="group" style="float:right">
+                            <button type="button" class="btn btn-success" id="btnCompileAndRun">
+                                Compile and Run
+                            </button>
+                            <button type="button" class="btn btn-warning" id="btnCompile">
+                                Compile
+                            </button>
+                            <button type="button" class="btn btn-info" id="btnSave">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-danger" id="btnReset">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /buttons row -->
 
-                <!-- <img src="{% static "images/original.jpg" %}" alt="Didn't show"> -->
+                    <!-- code editor row -->
+                    <div class="row"> 
+                        <textarea id="codeeditor" name="codeeditor"></textarea>
+                    </div>
+                    <!-- /code editor row -->
+                     
+                    <!-- terminal row -->
+                    <div class="row">
+                        <textarea id="terminal"></textarea>
+                    </div>
+                    <!-- /terminal row -->
                 </div>
-                <!-- /ImagePreview col -->
-
-            </div> <!--row-->
-        </div> <!--container div-->
-        
+                <!-- /CodeEditor col -->
+            </div> <!-- /row -->
+        </div> <!-- /container div -->
+        <script src="{% static "js/default.js" %}"></script>
     </body>
 </html>

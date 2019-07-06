@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from RetinaScrApp import views
-from RetinaScrApp.views import requestAjax
+from RetinaScrApp.views import requestAjax, compileCode
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -25,8 +25,10 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('RetinaScrApp/', include('RetinaScrApp.urls')),
     path('diagnosis', views.diagnosis, name='diagnosis'),
+    path('new_algorithm', views.new_algorithm, name='new_algorithm'),
     path('admin/', admin.site.urls),
     path('data_ajax_request', requestAjax, name='data_ajax_request'),
+    path('code_editor_ajax_request', compileCode, name='code_editor_ajax_request'),
 ]
 
 if settings.DEBUG:
