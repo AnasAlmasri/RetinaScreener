@@ -30,7 +30,6 @@ $.ajaxSetup({
     }
 });
 
-
 $(function() {
     $(document).on("change",".uploadFile", function()
     {
@@ -61,13 +60,90 @@ $(function() {
                         }
                     }
                 });
-            }
-            
-            
+            } 
         }
-    
     });
 });
+
+// -----------------------------------------------------------------
+
+// code editor tools
+var editor = CodeMirror.fromTextArea(
+    document.getElementById('codeeditor'),
+    { mode: "python", theme: "monokai", lineNumbers: true }
+);
+editor.setSize("100%", "250");
+
+var terminal = CodeMirror.fromTextArea(
+    document.getElementById('terminal'),
+    { mode: "shell", theme: "liquibyte", readOnly: true }
+);
+terminal.setSize("100%", "100");
+
+// Compile and Run button onClick
+$(function() {
+    $(document).on("click","#btnCompileAndRun", function(){
+        var source_code = editor.getValue();
+        //terminal.getDoc().setValue(text);
+        $.ajax({
+            url: 'code_editor_ajax_request',
+            data: {
+                'message': 'I want an AJAX response',
+                'source_code': source_code
+            },
+            dataType: 'json',
+            type: 'POST',
+            success: function(data) {
+                if (data.is_valid) {
+                    terminal.getDoc().setValue(data.response)
+                    console.log(data.response);
+                } else {
+                    console.log("You didn't message : I want an AJAX response");
+                }
+            }
+        });
+    });
+});
+
+// Compile button onClick
+$(function() {
+    $(document).on("click","#btnCompile", function(){
+        var source_code = editor.getValue();
+        //terminal.getDoc().setValue(text);
+        $.ajax({
+            url: 'code_editor_ajax_request',
+            data: {
+                'message': 'I want an AJAX response',
+                'source_code': source_code
+            },
+            dataType: 'json',
+            type: 'POST',
+            success: function(data) {
+                if (data.is_valid) {
+                    terminal.getDoc().setValue(data.response)
+                    console.log(data.response);
+                } else {
+                    console.log("You didn't message : I want an AJAX response");
+                }
+            }
+        });
+    });
+});
+
+// -------------------------------------------------------------------
+
+
+
+    /*
+    console.log('called');
+    var sourceCode = document.getElementById("codeeditor").value;
+
+    if (sourceCode) {
+        document.getElementById("terminal").value = sourceCode;
+        //var searchEncoded = encodeURIComponent(search);
+    } else {
+        console.log("textarea is null");
+    }*/
 
 
 
