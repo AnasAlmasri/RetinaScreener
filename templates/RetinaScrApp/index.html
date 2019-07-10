@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load socialaccount %}
+{% providers_media_js %}
 
 <html>
 
     <head>
-
         <meta charset="utf-8">
         <title>Retina Screener</title>
-
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="{% static "js/default.js" %}"></script>
         
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <link rel="stylesheet" href="{% static "css/default.css" %}">
-         
     </head>
 
     <body>
@@ -28,23 +28,23 @@
         <nav class="navbar navbar-cust" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
+                <div class="navbar-header"> 
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">RetinaScreener</a>
+                <a class="navbar-brand" href="/">RetinaScreener</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-cust">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">How it works</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact us</a></li>
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/how_it_works">How it works</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact us</a></li>
                 </ul>
             
                 <ul class="nav navbar-nav navbar-right">
@@ -53,36 +53,36 @@
                         <ul id="login-dp" class="dropdown-menu">
                             <li>
                                 <div class="row">
-                                        <div class="col-md-12">
-                                            Login via
-                                            <div class="social-buttons">
-                                                <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
-                                                <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
-                                            </div>
-                                            or
-                                            <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
-                                                    <div class="form-group">
-                                                        <label class="sr-only" for="exampleInputEmail2">Email address</label>
-                                                        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="sr-only" for="exampleInputPassword2">Password</label>
-                                                        <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
-                                                        <div class="help-block text-right"><a href="">Forget the password ?</a></div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label>
-                                                        <input type="checkbox"> keep me logged-in
-                                                        </label>
-                                                    </div>
-                                            </form>
+                                    <div class="col-md-12">
+                                        Login via
+                                        <div class="social-buttons">
+                                            <a href="{% provider_login_url "facebook" method="js_sdk" %}" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                                            <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
                                         </div>
-                                        <div class="bottom text-center">
-                                            New here ? <a href="#"><b>Join Us</b></a>
-                                        </div>
+                                        or
+                                        <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                                                    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="exampleInputPassword2">Password</label>
+                                                    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
+                                                    <div class="help-block text-right"><a href="">Forget the password ?</a></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                    <input type="checkbox"> keep me logged-in
+                                                    </label>
+                                                </div>
+                                        </form>
+                                    </div>
+                                    <div class="bottom text-center">
+                                        New here ? <a href="#"><b>Join Us</b></a>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
@@ -98,52 +98,51 @@
             <div class="row">
                 <!-- Sidebar col -->
                 <div class="col-lg-3 btn-group-vertical">
-                        <a href="/">
-                        <button type="button" class="btn btn-lg btn-primary btn-block">
-                                Upload
+                    <a href="/">
+                    <button type="button" class="btn btn-lg btn-primary btn-block">
+                            Upload
+                    </button>
+                    </a>
+
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <button type="button" class="btn btn-lg btn-primary btn-block dropdown-btn">
+                                Advanced <i class="fa fa-caret-down"></i>
                         </button>
-                        </a>
+                    </a>
 
-                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                            <button type="button" class="btn btn-lg btn-primary btn-block dropdown-btn">
-                                    Advanced <i class="fa fa-caret-down"></i>
-                            </button>
-                        </a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li>
+                            <a href="" style="text-decoration: none">
+                                <button type="button" class="btn-lg btn-block">
+                                    Customize
+                                </button>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/new_algorithm" style="text-decoration: none">
+                                <button type="button" class="btn-lg btn-block">
+                                    New
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
 
-                        <ul class="collapse list-unstyled" id="pageSubmenu">
-                            <li>
-                                <a href="" style="text-decoration: none">
-                                    <button type="button" class="btn-lg btn-block">
-                                        Customize
-                                    </button>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/new_algorithm" style="text-decoration: none">
-                                    <button type="button" class="btn-lg btn-block">
-                                        New
-                                    </button>
-                                </a>
-                            </li>
-                        </ul>
-
-                        <a href="/diagnosis">
-                        <button type="button" class="btn btn-lg btn-primary btn-block">
-                                Diagnosis
-                        </button>
-                        </a>
+                    <a href="/diagnosis">
+                    <button type="button" class="btn btn-lg btn-primary btn-block">
+                            Diagnosis
+                    </button>
+                    </a>
                 </div>
                 <!-- /Sidebar col -->
 
                 <!-- ImagePreview col -->
                 <div class="col-lg-9">
-                        <div class="col-lg-4 imgUp">
-                            <div class="imagePreview"></div>
-                            <label class="btn btn-primary">
-                            Upload<input type="file" class="uploadFile img" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
-                            </label>
-                        </div><!-- col-2 -->
-
+                    <div class="col-lg-4 imgUp">
+                        <div class="imagePreview"></div>
+                        <label class="btn btn-primary">
+                        Upload<input type="file" class="uploadFile img" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        </label>
+                    </div><!-- col-2 -->
                 <!-- <img src="{% static "images/original.jpg" %}" alt="Didn't show"> -->
                 </div>
                 <!-- /ImagePreview col -->
