@@ -14,6 +14,9 @@ import base64
 import matplotlib
 import sys
 import io
+import textwrap
+
+diagnozer = RetinaDiagnozer()
 
 def index(request):
     reset_processed_image()
@@ -47,7 +50,7 @@ def diagnosis(request):
         # example: [False, False, 'Fovea', 'Lesions', False]
 
         reset_processed_image()
-        diagnozer = RetinaDiagnozer(2)
+        diagnozer.set_doc_id(2)
         
         if not options[0] == False: # if Vessels was checked
             input_img = cv2.imread('static/images/original.jpg')
@@ -132,32 +135,47 @@ def compileCode(request):
         }
     if request.is_ajax():
         message = request.POST.get('message')
-        if message == 'I want an AJAX response':
+        print(message)
+        if message == 'compile and run' or message == 'compile':
             source_code = request.POST.get('source_code')
             if source_code:
-                console_response = execute_code(source_code)
+                console_response = execute_code(source_code, message)
                 data.update(is_valid=True)
                 data.update(response=console_response)
     return JsonResponse(data)
 
 def reset_processed_image():
-    processed_img = cv2.imread('static/images/processed.jpg')
+    processed_img = cv2.imread('static/images/original.jpg')
     for i in range(processed_img.shape[0]):
         for j in range(processed_img.shape[1]):
             for k in range(processed_img.shape[2]):
                 processed_img[i][j][k] = 255 # set value to white
     cv2.imwrite('static/images/processed.jpg', processed_img)
 
-def execute_code(source_code):
+def execute_code(source_code, order):
     # create file-like string to capture output
     codeOut = io.StringIO()
     # capture output and errors
     sys.stdout = codeOut
-    # execute code
-    try:
-        exec(source_code)
-    except Exception as ex:
-        print(ex)
+    # validate code
+    validated_src = validate(source_code)
+    if validated_src:
+        # execute code
+        if order == 'compile and run':
+            try:
+                exec(validated_src)
+                replace(validated_src)
+            except Exception as ex:
+                print(ex)
+        elif order == 'compile':
+            try:
+                compile(validated_src, 'custom', 'exec')
+                print('Code compiled successfully.')
+            except Exception as ex:
+                print(ex)
+    else:
+        print('Invalid source code')
+
     # restore stdout and stderr
     sys.stdout = sys.__stdout__
     # set return values
@@ -165,3 +183,28 @@ def execute_code(source_code):
     # close streams
     codeOut.close()
     return returned_output
+
+def validate(source_code):
+    # check function definition
+    if source_code.startswith('def extract(self, fundus):'):
+        # split code into lines
+        lines = source_code.splitlines()
+        # drop whitespace lines
+        temp = [line for line in lines if not line=='']
+        # check return statement
+        if 'return' in temp[-1]:
+            # add extra indentation to be able to fit in file with no whitespace issues
+            return source_code.replace('\t', ' ' * 4)
+        else:
+            print("No 'return' statement detected")
+    else:
+        print("Function definition [def extract(self, fundus)] not detected")
+    return False
+
+def replace(source_code):
+    src = textwrap.indent(source_code, ' ' * 4)
+    # update .py file
+    diagnozer.parse_pyfile(
+        'RetinaScrApp/framework_src/extractors/CustomVesselExtractor.py',
+        src
+    )

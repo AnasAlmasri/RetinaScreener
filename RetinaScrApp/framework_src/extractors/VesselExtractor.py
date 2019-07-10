@@ -8,7 +8,7 @@ class VesselExtractor:
 	def __init__(self, image):
 		self.image = image.fundus
 
-	def morph_extractor(self):
+	def extract(self):
 		# adapted from 
 		# https://github.com/getsanjeev/retina-features/blob/bb4c5cc70de65d09695aa9aadf34be290a8a5736/bloodvessels.py
 	

@@ -1,9 +1,14 @@
 from RetinaScrApp.framework_src.image_utils.RetinaImage import RetinaImage
+# import default extractors
 from RetinaScrApp.framework_src.extractors.VesselExtractor import VesselExtractor
 from RetinaScrApp.framework_src.extractors.OpticNerveExtractor import OpticNerveExtractor
 from RetinaScrApp.framework_src.extractors.LesionExtractor import ExudateExtractor
+# import custom extractors
+from RetinaScrApp.framework_src.extractors.CustomVesselExtractor import CustomVesselExtractor
+# import models
 from RetinaScrApp.models import Doctor
 import cv2
+import re
 
 class RetinaDiagnozer:
     """
@@ -13,8 +18,10 @@ class RetinaDiagnozer:
         extractors['lesion']: 'default' or 'algo_id',
     """
 
-    def __init__(self, doc_id):
+    def __init__(self):
         self.extractors = None
+    
+    def set_doc_id(self, doc_id):
         self.get_extractor_preferences(doc_id)
     
     def get_extractor_preferences(self, doc_id):
@@ -30,10 +37,12 @@ class RetinaDiagnozer:
         if not self.extractors == None:
             if self.extractors['vessel'] == 'default':
                 vessels_extractor = VesselExtractor(retina)
-                vessels = vessels_extractor.morph_extractor()
+                vessels = vessels_extractor.extract(retina.fundus)
                 return vessels
             else:
-                pass
+                vessels_extractor = CustomVesselExtractor(retina)
+                vessels = vessels_extractor.extract(retina.fundus)
+                return vessels
 
     def process_optic_nerve(self, retina):
         if not self.extractors == None:
@@ -60,4 +69,18 @@ class RetinaDiagnozer:
             else:
                 pass
 
+    # function to find and replace part of the code to execute later
+    def parse_pyfile(self, filepath, new_code):
+        original_src = open(filepath, 'r').read()
+        pattern = '# BEGINNING OF EXTRACT FUNCTION.*?# END OF EXTRACT FUNCTION'
 
+        updated_code = re.sub(
+            pattern, 
+            '# BEGINNING OF EXTRACT FUNCTION\n' + new_code + '\n\t# END OF EXTRACT FUNCTION', 
+            original_src, 
+            flags=re.DOTALL
+        )
+        #original_src.replace(pattern, new_code)
+        with open(filepath, 'w') as f:
+            f.write(updated_code)
+            f.close()
