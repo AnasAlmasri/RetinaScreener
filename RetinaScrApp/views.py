@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from RetinaScrApp.framework_src.diagnozer.RetinaDiagnozer import RetinaDiagnozer
 from RetinaScrApp.framework_src.image_utils.RetinaImage import RetinaImage
 from RetinaScrApp.framework_src.extractors.VesselExtractor import VesselExtractor
 from RetinaScrApp.framework_src.extractors.OpticNerveExtractor import OpticNerveExtractor
 from RetinaScrApp.framework_src.extractors.LesionExtractor import ExudateExtractor
-
+from RetinaScrApp.models import Doctor, Patient, Algorithm, Diagnosis
+from RetinaScrApp import forms
 import cv2
 import base64
 import matplotlib
@@ -16,8 +17,22 @@ import io
 
 def index(request):
     reset_processed_image()
-    index_dict = {'insert_me': "Hello. I am from views.py"}
+
+    doctor_list = Doctor.objects.all()
+    index_dict = {'logged_in_user': doctor_list}
     return render(request, 'RetinaScrApp/index.html', context=index_dict)
+
+def new_user(request):
+    form = forms.RegistrationForm()
+
+    if request.method == 'POST':
+        form = forms.RegistrationForm(request.POST)
+        if form.is_valid():
+            print('First Name: ' + form.cleaned_data['f_name'])
+            print('Last Name: ' + form.cleaned_data['l_name'])
+            print('Email: ' + form.cleaned_data['email'])
+            #return render(request, 'RetinaScrApp/index.html') 
+    return render(request, 'RetinaScrApp/new_user.html', {'form': form})
 
 def diagnosis(request):
     reset_processed_image()
@@ -32,12 +47,12 @@ def diagnosis(request):
         # example: [False, False, 'Fovea', 'Lesions', False]
 
         reset_processed_image()
-
+        diagnozer = RetinaDiagnozer(2)
+        
         if not options[0] == False: # if Vessels was checked
             input_img = cv2.imread('static/images/original.jpg')
             retina = RetinaImage(input_img)
-            vessels_extractor = VesselExtractor(retina)
-            vessels = vessels_extractor.morph_extractor()
+            vessels = diagnozer.process_vessels(retina)
             retina.set_vessel_features(vessels)
             # save processed image
             cv2.imwrite('static/images/processed.jpg', retina.vessel_features)
@@ -45,8 +60,7 @@ def diagnosis(request):
         if not options[1] == False: # if Optic Nerve was checked
             input_img = cv2.imread('static/images/original.jpg')
             retina = RetinaImage(input_img)
-            optic_nerve_extractor = OpticNerveExtractor(retina)
-            optic_nerve = optic_nerve_extractor.morph_extractor()
+            optic_nerve = diagnozer.process_optic_nerve(retina)
             retina.set_optic_nerve_features(optic_nerve)
             # save processed image
             cv2.imwrite('static/images/processed.jpg', retina.optic_nerve_features)
@@ -57,8 +71,7 @@ def diagnosis(request):
         if not options[3] == False: # if lesions was checked
             input_img = cv2.imread('static/images/original.jpg')
             retina = RetinaImage(input_img)
-            lesion_extractor = ExudateExtractor(retina)
-            lesions = lesion_extractor.clahe_extractor()
+            lesions = diagnozer.process_lesions(retina)
             retina.set_lesion_features(lesions)
             # save processed image
             cv2.imwrite('static/images/processed.jpg', retina.lesion_features)
@@ -69,9 +82,10 @@ def diagnosis(request):
     diagnosis_dict = {'vessel_src':'images/processed.jpg'}
     return render(request, 'RetinaScrApp/diagnosis.html', context=diagnosis_dict)
 
+def customize_algorithm(request):
+    pass
 
 def new_algorithm(request):
-
     data = {
         'client_secret': 'CLIENT_SECRET',
         'async': 0,
@@ -83,6 +97,15 @@ def new_algorithm(request):
 
     new_algo_dict = {}
     return render(request, 'RetinaScrApp/new_algorithm.html', context=new_algo_dict)
+
+def how_it_works(request):
+    pass
+
+def about(request):
+    pass
+
+def contact(request):
+    pass
 
 @csrf_exempt 
 def requestAjax(request):
