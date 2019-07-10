@@ -24,11 +24,17 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.index, name='index'),
     path('RetinaScrApp/', include('RetinaScrApp.urls')),
+    path('new_user', views.new_user, name='new_user'),
     path('diagnosis', views.diagnosis, name='diagnosis'),
+    path('customize_algorithm', views.customize_algorithm, name='customize_algorithm'),
     path('new_algorithm', views.new_algorithm, name='new_algorithm'),
+    path('how_it-works', views.how_it_works, name='how_it_works'),
+    path('about', views.about, name='about'),
+    path('contact', views.contact, name='contact'),
     path('admin/', admin.site.urls),
     path('data_ajax_request', requestAjax, name='data_ajax_request'),
     path('code_editor_ajax_request', compileCode, name='code_editor_ajax_request'),
+    path('accounts/', include('allauth.urls'))
 ]
 
 if settings.DEBUG:
