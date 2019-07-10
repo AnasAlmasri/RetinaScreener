@@ -70,7 +70,7 @@ $(function() {
 // code editor tools
 var editor = CodeMirror.fromTextArea(
     document.getElementById('codeeditor'),
-    { mode: "python", theme: "monokai", lineNumbers: true }
+    { mode: "python", theme: "monokai", lineNumbers: true, tabSize: 4}
 );
 editor.setSize("100%", "250");
 
@@ -83,17 +83,19 @@ terminal.setSize("100%", "100");
 // Compile and Run button onClick
 $(function() {
     $(document).on("click","#btnCompileAndRun", function(){
+        console.log("called");
         var source_code = editor.getValue();
         //terminal.getDoc().setValue(text);
         $.ajax({
             url: 'code_editor_ajax_request',
             data: {
-                'message': 'I want an AJAX response',
+                'message': 'compile and run',
                 'source_code': source_code
             },
             dataType: 'json',
             type: 'POST',
             success: function(data) {
+                console.log(data)
                 if (data.is_valid) {
                     terminal.getDoc().setValue(data.response)
                     console.log(data.response);
@@ -113,7 +115,7 @@ $(function() {
         $.ajax({
             url: 'code_editor_ajax_request',
             data: {
-                'message': 'I want an AJAX response',
+                'message': 'compile',
                 'source_code': source_code
             },
             dataType: 'json',
