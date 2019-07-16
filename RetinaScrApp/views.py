@@ -4,14 +4,18 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.decorators import login_required
 from RetinaScrApp.framework_src.diagnozer.RetinaDiagnozer import RetinaDiagnozer
 from RetinaScrApp.framework_src.image_utils.RetinaImage import RetinaImage
 from RetinaScrApp.framework_src.extractors.VesselExtractor import VesselExtractor
 from RetinaScrApp.framework_src.extractors.OpticNerveExtractor import OpticNerveExtractor
 from RetinaScrApp.framework_src.extractors.LesionExtractor import LesionExtractor
 from RetinaScrApp.models import Doctor, Patient, Algorithm, Diagnosis
-from RetinaScrApp.forms import RegistrationForm
+from RetinaScrApp.forms import RegistrationForm, LoginForm
 from email.utils import parseaddr
+from django.urls import reverse
 import cv2
 import base64
 import matplotlib
@@ -24,6 +28,10 @@ diagnozer = RetinaDiagnozer()
 
 def index(request):
     reset_processed_image()
+    index_dict = {'registration_form': RegistrationForm(), 'login_form': LoginForm()}
+    return render(request, 'RetinaScrApp/index.html', context=index_dict)
+
+def user_registration(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -41,14 +49,34 @@ def index(request):
                 password=password,
                 login_method='email')[0]
                 record.save()
-                return redirect('index')
             else:
                 msg = validation_ret + " Please try again by re-filling the registration form with valid information."
-                index_dict = {'form': form, 'errors': msg}
+                index_dict = {'registration_form': form, 'errors': msg}
                 return render(request, 'RetinaScrApp/index.html', context=index_dict)
-    #doctor_list = Doctor.objects.all()
-    index_dict = {'form': RegistrationForm(), 'password_confirmed': False}
-    return render(request, 'RetinaScrApp/index.html', context=index_dict)
+    return redirect('index')
+
+def user_login(request):
+    print('login request received')
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['login_email']
+            password = form.cleaned_data['login_password']
+            doctor = Doctor.objects.get(email=email, password=password)
+            if doctor:# if user is registered
+                user = authenticate(username='doctor', password='unmc@123')
+                if user:
+                    login(request, user)
+            else:
+                print('User not found')
+        else:
+            print('Someone tried to login and failed')
+    return HttpResponseRedirect(reverse('index'))
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
 
 def diagnosis(request):
     reset_processed_image()

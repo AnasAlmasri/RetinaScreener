@@ -21,7 +21,7 @@ class RegistrationForm(forms.Form):
     email = forms.EmailField(widget=forms.TextInput(
         attrs={
             'id': 'email',
-            'type': 'name',
+            'type': 'email',
             'class': 'form-control'
         }
     ))
@@ -42,3 +42,22 @@ class RegistrationForm(forms.Form):
         }
     ))
 
+
+class LoginForm(forms.Form):
+    login_email = forms.EmailField(widget=forms.TextInput(
+        attrs={
+            'id': 'login_email',
+            'type': 'email',
+            'class': 'form-control',
+            'placeholder': 'Email'
+        }
+    ))
+
+    login_password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            'id': 'login_password',
+            'type': 'password',
+            'class': 'form-control',
+            'placeholder': 'Password'
+        }
+    ))
