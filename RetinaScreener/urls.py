@@ -24,7 +24,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.index, name='index'),
     path('RetinaScrApp/', include('RetinaScrApp.urls')),
-    path('new_user', views.new_user, name='new_user'),
     path('diagnosis', views.diagnosis, name='diagnosis'),
     path('customize_algorithm', views.customize_algorithm, name='customize_algorithm'),
     path('new_algorithm', views.new_algorithm, name='new_algorithm'),
