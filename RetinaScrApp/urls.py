@@ -4,7 +4,6 @@ from RetinaScrApp.views import requestAjax, compileCode
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('new_user', views.new_user, name='new_user'),
     path('diagnosis', views.diagnosis, name='diagnosis'),
     path('customize_algorithm', views.customize_algorithm, name='customize_algorithm'),
     path('new_algorithm', views.new_algorithm, name='new_algorithm'),

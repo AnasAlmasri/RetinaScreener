@@ -3,11 +3,12 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt 
 
-class OpticNerveExtractor:
+class CustomOpticNerveExtractor:
 	# class constructor
 	def __init__(self):
-		pass
+            pass
 
+	# BEGINNING OF EXTRACT FUNCTION
 	def extract(self, fundus):
 		# extract green channel
 		img = fundus[:,:,1]
@@ -86,3 +87,4 @@ class OpticNerveExtractor:
 		#img_output = img_candid
 		#cv2.imshow('input', self.image)
 		return img_output
+	# END OF EXTRACT FUNCTION

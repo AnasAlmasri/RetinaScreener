@@ -1,41 +1,54 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.contrib import messages
+from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from RetinaScrApp.framework_src.diagnozer.RetinaDiagnozer import RetinaDiagnozer
 from RetinaScrApp.framework_src.image_utils.RetinaImage import RetinaImage
 from RetinaScrApp.framework_src.extractors.VesselExtractor import VesselExtractor
 from RetinaScrApp.framework_src.extractors.OpticNerveExtractor import OpticNerveExtractor
-from RetinaScrApp.framework_src.extractors.LesionExtractor import ExudateExtractor
+from RetinaScrApp.framework_src.extractors.LesionExtractor import LesionExtractor
 from RetinaScrApp.models import Doctor, Patient, Algorithm, Diagnosis
-from RetinaScrApp import forms
+from RetinaScrApp.forms import RegistrationForm
+from email.utils import parseaddr
 import cv2
 import base64
 import matplotlib
 import sys
 import io
+from difflib import SequenceMatcher 
 import textwrap
 
 diagnozer = RetinaDiagnozer()
 
 def index(request):
     reset_processed_image()
-
-    doctor_list = Doctor.objects.all()
-    index_dict = {'logged_in_user': doctor_list}
-    return render(request, 'RetinaScrApp/index.html', context=index_dict)
-
-def new_user(request):
-    form = forms.RegistrationForm()
-
     if request.method == 'POST':
-        form = forms.RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
-            print('First Name: ' + form.cleaned_data['f_name'])
-            print('Last Name: ' + form.cleaned_data['l_name'])
-            print('Email: ' + form.cleaned_data['email'])
-            #return render(request, 'RetinaScrApp/index.html') 
-    return render(request, 'RetinaScrApp/new_user.html', {'form': form})
+            f_name = form.cleaned_data['f_name']
+            l_name = form.cleaned_data['l_name']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            confirm = form.cleaned_data['confirm_password']
+            validation_ret = validate_registration(f_name, l_name, email, password, confirm)
+            if validation_ret == None: # if no errors were returned
+                record = Doctor.objects.get_or_create(
+                f_name=f_name,
+                l_name=l_name,
+                email=email,
+                password=password,
+                login_method='email')[0]
+                record.save()
+                return redirect('index')
+            else:
+                msg = validation_ret + " Please try again by re-filling the registration form with valid information."
+                index_dict = {'form': form, 'errors': msg}
+                return render(request, 'RetinaScrApp/index.html', context=index_dict)
+    #doctor_list = Doctor.objects.all()
+    index_dict = {'form': RegistrationForm(), 'password_confirmed': False}
+    return render(request, 'RetinaScrApp/index.html', context=index_dict)
 
 def diagnosis(request):
     reset_processed_image()
@@ -50,7 +63,9 @@ def diagnosis(request):
         # example: [False, False, 'Fovea', 'Lesions', False]
 
         reset_processed_image()
-        diagnozer.set_doc_id(2)
+
+        # get doctor_id and set it in diagnozer
+        diagnozer.set_doc_id(2) # doctor_id=2 as an example
         
         if not options[0] == False: # if Vessels was checked
             input_img = cv2.imread('static/images/original.jpg')
@@ -208,3 +223,28 @@ def replace(source_code):
         'RetinaScrApp/framework_src/extractors/CustomVesselExtractor.py',
         src
     )
+
+def validate_registration(f_name, l_name, email, password, confirm):
+    if not password == confirm:
+        return 'Input passwords do not match.'
+    elif not f_name.isalpha():
+        return 'First name cannot contain numbers or special characters, only letters.'
+    elif not l_name.isalpha():
+        return 'Last name cannot contain numbers or special characters, only letters.'
+    elif f_name in password:
+        return 'Password cannot contain first name.'
+    elif l_name in password:
+        return 'Password cannot contain last name.'
+    elif parseaddr(email) == ('',''):
+        return 'Email address is invalid.'
+    elif len(password) < 8:
+        return 'Password should be at least 8 characters long'
+
+    seqMatch = SequenceMatcher(None, email, password) 
+    match = seqMatch.find_longest_match(0, len(email), 0, len(password)) 
+    if (match.size >= 4): 
+        return 'Email and password cannot have matching substrings of length >=4'
+  
+    return None
+
+

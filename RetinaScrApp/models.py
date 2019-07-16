@@ -7,6 +7,7 @@ class Doctor(models.Model):
     f_name = models.CharField(max_length=24)
     l_name = models.CharField(max_length=24)
     email = models.CharField(max_length=48, unique=True) # no duplicates allowed
+    password = models.CharField(max_length=48, default='default')
     login_method = models.CharField(max_length=10) # facebook/twitter/google
     vessel_pref = models.CharField(max_length=24, default='default') # 'default' or 'algo_id'
     optic_pref = models.CharField(max_length=24, default='default') # 'default' or 'algo_id'

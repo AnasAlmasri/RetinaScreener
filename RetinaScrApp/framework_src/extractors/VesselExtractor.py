@@ -5,16 +5,14 @@ import csv
 
 class VesselExtractor:
 	# class constructor
-	def __init__(self, image):
-		self.image = image.fundus
+	def __init__(self):
+		pass
 
-	def extract(self):
+	def extract(self, fundus):
 		# adapted from 
 		# https://github.com/getsanjeev/retina-features/blob/bb4c5cc70de65d09695aa9aadf34be290a8a5736/bloodvessels.py
 	
-		image = self.image
-		fundus = self.image
-		b,green_fundus,r = cv2.split(image)
+		b,green_fundus,r = cv2.split(fundus)
 		clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
 		contrast_enhanced_green_fundus = clahe.apply(green_fundus)
 

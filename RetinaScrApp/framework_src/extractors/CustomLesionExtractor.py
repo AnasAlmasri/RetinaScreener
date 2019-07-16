@@ -2,14 +2,15 @@ import numpy as np
 import csv
 import cv2
 
-class LesionExtractor:
+class CustomLesionExtractor:
     jpegImg = 0
     grayImg = 0
     curImg = 0
 
     def __init__(self):
         pass
-        
+    
+    # BEGINNING OF EXTRACT FUNCTION
     def extract(self, fundus):
         self.jpegImg = fundus
         self.curImg = np.array(fundus)
@@ -28,6 +29,7 @@ class LesionExtractor:
                 else:
                     temp[i][j] = 0
         return temp
+    # END OF EXTRACT FUNCTION
         
     def greenComp(self):
     ###Extracting Green Component

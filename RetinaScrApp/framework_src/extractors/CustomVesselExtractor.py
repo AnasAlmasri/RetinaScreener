@@ -5,8 +5,8 @@ import csv
 
 class CustomVesselExtractor:
     # class constructor
-    def __init__(self, image):
-        self.image = image.fundus
+    def __init__(self):
+        pass
 
     # BEGINNING OF EXTRACT FUNCTION
     def extract(self, fundus):
@@ -67,6 +67,6 @@ class CustomVesselExtractor:
                 cv2.drawContours(xmask, [cnt], -1, 0, -1)   
     
         finimage = cv2.bitwise_and(fundus_eroded,fundus_eroded,mask=xmask)  
-        blood_vessels = cv2.bitwise_not(finimage)
-        return blood_vessels
+        vessels = cv2.bitwise_not(finimage)
+        return vessels
 	# END OF EXTRACT FUNCTION
