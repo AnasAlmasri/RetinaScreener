@@ -132,6 +132,11 @@ $(function() {
     });
 });
 
+document.getElementById('activate').addEventListener('click', () => {
+    createToast('hello', 'a', 'b');
+});
+
+
 // -------------------------------------------------------------------
 
 

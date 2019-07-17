@@ -12,13 +12,17 @@
         
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="{% static "js/default.js" %}"></script>
         
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="{% static "js/default.js" %}"></script>
         <link rel="stylesheet" href="{% static "css/default.css" %}">
+
     </head>
 
     <body>
         {% csrf_token %}
+
         <!--Navbar-->
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -50,7 +54,19 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% csrf_token %}
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'user_logout' %}">Logout</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <b>{{ user.first_name }} {{ user.last_name }}</strong></b>
+                            <span class="caret"></span>
+                        </a>
+                        <ul id="login-dp" class="dropdown-menu">
+                            <li><div class="row"><div class="col-md-12"><div class="form-group">
+                                <a href="{% url 'user_logout' %}">
+                                <button type="button" class="btn btn-primary btn-block">Logout</button>
+                                </a>
+                            </div></div></div></li>
+                        </ul>
+                    </li>
                     {% else %}
                     <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
@@ -142,11 +158,11 @@
                 <!-- /Sidebar col -->
 
                 <!-- ImagePreview col -->
-                <div class="col-lg-9">
+                <div class="col-lg-9 imgUp">
                     <div class="col-lg-4 imgUp">
                         <div class="imagePreview"></div>
                         <label class="btn btn-primary">
-                        Upload<input type="file" class="uploadFile img" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                        Upload<input type="file" class="uploadFile img" value="Upload Photo" style="height: 0px;overflow: hidden;">
                         </label>
                     </div><!-- col-2 -->
                 <!-- <img src="{% static "images/original.jpg" %}" alt="Didn't show"> -->
@@ -218,6 +234,5 @@
             </script>
         {% endif %}
         <!-- /registration error div -->
-
     </body>
 </html>
