@@ -22,20 +22,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('user_login', views.user_login, name='user_login'),
-    path('user_logout', views.user_logout, name='user_logout'),
-    path('register', views.user_registration, name='register'),
-    path('RetinaScrApp/', include('RetinaScrApp.urls')),
-    path('diagnosis', views.diagnosis, name='diagnosis'),
-    path('customize_algorithm', views.customize_algorithm, name='customize_algorithm'),
-    path('new_algorithm', views.new_algorithm, name='new_algorithm'),
-    path('how_it-works', views.how_it_works, name='how_it_works'),
-    path('about', views.about, name='about'),
-    path('contact', views.contact, name='contact'),
+    path('', include('RetinaScrApp.urls')),
     path('admin/', admin.site.urls),
-    path('data_ajax_request', requestAjax, name='data_ajax_request'),
-    path('code_editor_ajax_request', compileCode, name='code_editor_ajax_request'),
     path('accounts/', include('allauth.urls'))
 ]
 
