@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from RetinaScrApp.framework_src.diagnozer.RetinaDiagnozer import RetinaDiagnozer
 from RetinaScrApp.framework_src.image_utils.RetinaImage import RetinaImage
 from RetinaScrApp.framework_src.extractors.VesselExtractor import VesselExtractor
@@ -23,6 +24,8 @@ import sys
 import io
 from difflib import SequenceMatcher 
 import textwrap
+import random
+import string
 
 diagnozer = RetinaDiagnozer()
 
@@ -42,13 +45,19 @@ def user_registration(request):
             confirm = form.cleaned_data['confirm_password']
             validation_ret = validate_registration(f_name, l_name, email, password, confirm)
             if validation_ret == None: # if no errors were returned
+                doc_username = random_doc_username(10)
                 record = Doctor.objects.get_or_create(
-                f_name=f_name,
-                l_name=l_name,
-                email=email,
-                password=password,
-                login_method='email')[0]
+                    doc_username=doc_username,
+                    f_name=f_name,
+                    l_name=l_name,
+                    email=email,
+                    password=password,
+                    login_method='email')[0]
                 record.save()
+                user = User.objects.create_user(doc_username, email, password)
+                user.first_name = f_name
+                user.last_name = l_name
+                user.save()
             else:
                 msg = validation_ret + " Please try again by re-filling the registration form with valid information."
                 index_dict = {'registration_form': form, 'errors': msg}
@@ -56,7 +65,6 @@ def user_registration(request):
     return redirect('index')
 
 def user_login(request):
-    print('login request received')
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -64,14 +72,14 @@ def user_login(request):
             password = form.cleaned_data['login_password']
             doctor = Doctor.objects.get(email=email, password=password)
             if doctor:# if user is registered
-                user = authenticate(username='doctor', password='unmc@123')
+                user = authenticate(username=doctor.doc_username, password=password)
                 if user:
                     login(request, user)
             else:
                 print('User not found')
         else:
             print('Someone tried to login and failed')
-    return HttpResponseRedirect(reverse('index'))
+    return redirect('index')
 
 @login_required
 def user_logout(request):
@@ -275,4 +283,6 @@ def validate_registration(f_name, l_name, email, password, confirm):
   
     return None
 
-
+def random_doc_username(stringLength):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(stringLength))

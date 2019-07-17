@@ -4,6 +4,7 @@ class Doctor(models.Model):
     # primary key
     doctor_id = models.AutoField(primary_key=True)
     # other fields
+    doc_username = models.CharField(max_length=10, default='ZZZZZZZZZZ')
     f_name = models.CharField(max_length=24)
     l_name = models.CharField(max_length=24)
     email = models.CharField(max_length=48, unique=True) # no duplicates allowed
