@@ -33,13 +33,7 @@
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header"> 
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">RetinaScreener</a>
+                <a class="navbar-brand">RetinaScreener</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -157,18 +151,194 @@
                 </div>
                 <!-- /Sidebar col -->
 
-                <!-- ImagePreview col -->
-                <div class="col-lg-9 imgUp">
-                    <div class="col-lg-4 imgUp">
-                        <div class="imagePreview"></div>
-                        <label class="btn btn-primary">
-                        Upload<input type="file" class="uploadFile img" value="Upload Photo" style="height: 0px;overflow: hidden;">
-                        </label>
-                    </div><!-- col-2 -->
-                <!-- <img src="{% static "images/original.jpg" %}" alt="Didn't show"> -->
-                </div>
-                <!-- /ImagePreview col -->
+                <div class="col-lg-6">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item active" data-toggle="tab" style="width: 50%; text-align: center;">
+                            <a id="newPatient" class="nav-link active" data-toggle="tab" href="#new_patient">New Patient</a></li>
+                        <li class="nav-item" data-toggle="tab" style="width: 50%; text-align: center;">
+                            <a id="existingPatient" class="nav-link" data-toggle="tab" href="#existing_patient">Existing Patient</a></li>
+                    </ul>
 
+                    <!-- TAB CONTENTS -->
+                    <div class="tab-content" id="tabContent">
+
+                    <!-- REGISTERING A NEW PATIENT -->
+                    <div id="new_patient" class="tab-pane active">
+                    <table class="table table-striped"><tbody><tr><td colspan="1" style="padding: 0">
+                    <form class="well form-horizontal"><fieldset>
+                        <div class="form-group">
+                            <div class="col-lg-6 inputGroupContainer">
+                                <div class="input-group">
+                                    <label class="control-label">Patient's First Name</label>
+                                    <input id="firstName" name="firstName" class="form-control" required="true" value="" type="text"></div>
+                            </div>
+                            <div class="col-lg-6 inputGroupContainer">
+                                <div class="input-group">
+                                    <label class="control-label">Patient's Last Name</label>
+                                    <input id="lastName" name="lastName" class="form-control" required="true" value="" type="text"></div>
+                            </div>
+                        </div>
+
+                        <hr style="border-top: 1px solid;">
+
+                        <div style="text-align: center">
+                            <label style="text-align: center;">Algorithm Preferences</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" style="margin-left: 3%;">Doctor</label>
+                            <div class="col-lg-12 inputGroupContainer">
+                                <div class="input-group"><span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-user"></i></span>
+                                    <input id="lastName" name="lastName" class="form-control" type="text" disabled></div>
+                            </div>
+                        </div>
+                            
+                        <div class="form-group">
+                            <div class="inputGroupContainer">
+                                <div class="col-lg-5" style="margin-left: 3%; margin-right: 3%;">
+                                    <div class="row">
+                                        <label class="control-label">Vessels</label>
+                                        <select id="algoTypePicker" class="selectpicker show-menu-arrow form-control">
+                                            <option value="default" selected>Default</option>
+                                            <option value="">Algorithm1</option>
+                                            <option value="">Algorithm2</option>
+                                            <option value="">Algorithm3</option>
+                                            <option value="">Algorithm4</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label">Fovea</label>
+                                        <select id="algoTypePicker" class="selectpicker show-menu-arrow form-control">
+                                            <option value="default" selected>Default</option>
+                                            <option value="">Algorithm1</option>
+                                            <option value="">Algorithm2</option>
+                                            <option value="">Algorithm3</option>
+                                            <option value="">Algorithm4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2"></div>
+                                <div class="col-lg-5" style="float: right; margin-left: 3%; margin-right: 3%;">
+                                    <div class="row">
+                                        <label class="control-label">Optic Nerve</label>
+                                        <select id="algoTypePicker" class="selectpicker show-menu-arrow form-control">
+                                            <option value="default" selected>Default</option>
+                                            <option value="">Algorithm1</option>
+                                            <option value="">Algorithm2</option>
+                                            <option value="">Algorithm3</option>
+                                            <option value="">Algorithm4</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label">Lesions</label>
+                                        <select id="algoTypePicker" class="selectpicker show-menu-arrow form-control">
+                                            <option value="default" selected>Default</option>
+                                            <option value="">Algorithm1</option>
+                                            <option value="">Algorithm2</option>
+                                            <option value="">Algorithm3</option>
+                                            <option value="">Algorithm4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </fieldset></form>
+                    </td></tr></tbody></table>
+                    </div>
+
+                    <!-- SEARCHING FOR AN EXISTING PATIENT -->
+                    <div id="existing_patient" class="tab-pane">
+                    <table class="table table-striped"><tbody><tr><td colspan="1" style="padding: 0">
+                    <form class="well form-horizontal"><fieldset>
+                        <select class="form-control select2">
+                            <option>Select</option> 
+                            <option>FirstName LastName</option> 
+                            <option>FirstName LastName</option> 
+                            <option>FirstName LastName</option> 
+                            <option>FirstName LastName</option> 
+                            <option>FirstName LastName</option> 
+                        </select>
+
+                        <hr style="border-top: 1px solid;">
+
+                        <div style="text-align: center">
+                            <label style="text-align: center;">Algorithm Preferences</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" style="margin-left: 3%;">Doctor</label>
+                            <div class="col-lg-12 inputGroupContainer">
+                                <div class="input-group"><span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-user"></i></span>
+                                    <input id="lastName" name="lastName" class="form-control" type="text" disabled></div>
+                            </div>
+                        </div>
+                            
+                        <div class="form-group">
+                            <div class="inputGroupContainer">
+                                <div class="col-lg-5" style="margin-left: 3%; margin-right: 3%;">
+                                    <div class="row">
+                                        <label class="control-label">Vessels</label>
+                                        <select id="algoTypePicker" class="selectpicker show-menu-arrow form-control">
+                                            <option value="default" selected>Default</option>
+                                            <option value="">Algorithm1</option>
+                                            <option value="">Algorithm2</option>
+                                            <option value="">Algorithm3</option>
+                                            <option value="">Algorithm4</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label">Fovea</label>
+                                        <select id="algoTypePicker" class="selectpicker show-menu-arrow form-control">
+                                            <option value="default" selected>Default</option>
+                                            <option value="">Algorithm1</option>
+                                            <option value="">Algorithm2</option>
+                                            <option value="">Algorithm3</option>
+                                            <option value="">Algorithm4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2"></div>
+                                <div class="col-lg-5" style="float: right; margin-left: 3%; margin-right: 3%;">
+                                    <div class="row">
+                                        <label class="control-label">Optic Nerve</label>
+                                        <select id="algoTypePicker" class="selectpicker show-menu-arrow form-control">
+                                            <option value="default" selected>Default</option>
+                                            <option value="">Algorithm1</option>
+                                            <option value="">Algorithm2</option>
+                                            <option value="">Algorithm3</option>
+                                            <option value="">Algorithm4</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label">Lesions</label>
+                                        <select id="algoTypePicker" class="selectpicker show-menu-arrow form-control">
+                                            <option value="default" selected>Default</option>
+                                            <option value="">Algorithm1</option>
+                                            <option value="">Algorithm2</option>
+                                            <option value="">Algorithm3</option>
+                                            <option value="">Algorithm4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </fieldset></form>
+                    </td></tr></tbody></table>
+                    </div></div>
+                </div> 
+               
+                <!-- ImagePreview col -->
+                <div class="col-lg-3 imgUp" style="margin-top: 4%">
+                    <div class="imagePreview"></div>
+                    <label class="btn btn-primary">
+                    Upload<input type="file" class="uploadFile img" value="Upload Photo" style="height: 0px;overflow: hidden; width: 175px;">
+                    </label>
+                </div>
+                <!-- /ImagePreview col --> 
+
+                </div>
             </div> <!-- /row -->
         </div> <!-- /container div -->
         

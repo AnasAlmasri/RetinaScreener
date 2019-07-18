@@ -17,7 +17,7 @@ body{
     color: #ddd;
     font-weight: bold;
     margin-right: 50px;
-    
+    pointer-events: none;
 }
 
 .navbar-nav{
@@ -76,8 +76,8 @@ body{
 }
 
 .imagePreview {
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
     background-position: center center;
     background:url(http://cliquecities.com/assets/no-image-e3699ae23f866f6cbdf8ba2443ee5c4e.jpg);
     background-color:#fff;

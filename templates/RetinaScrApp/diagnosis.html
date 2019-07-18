@@ -25,65 +25,77 @@
         <nav class="navbar navbar-cust" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">RetinaScreener</a>
+                <div class="navbar-header"> 
+                <a class="navbar-brand">RetinaScreener</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-cust">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">How it works</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact us</a></li>
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/how_it_works">How it works</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact us</a></li>
                 </ul>
-            
+                
                 <ul class="nav navbar-nav navbar-right">
+                    {% csrf_token %}
+                    {% if user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <b>{{ user.first_name }} {{ user.last_name }}</strong></b>
+                            <span class="caret"></span>
+                        </a>
+                        <ul id="login-dp" class="dropdown-menu">
+                            <li><div class="row"><div class="col-md-12"><div class="form-group">
+                                <a href="{% url 'user_logout' %}">
+                                <button type="button" class="btn btn-primary btn-block">Logout</button>
+                                </a>
+                            </div></div></div></li>
+                        </ul>
+                    </li>
+                    {% else %}
                     <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
                         <ul id="login-dp" class="dropdown-menu">
                             <li>
                                 <div class="row">
-                                        <div class="col-md-12">
-                                            Login via
-                                            <div class="social-buttons">
-                                                <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
-                                                <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
-                                            </div>
-                                            or
-                                            <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
-                                                    <div class="form-group">
-                                                        <label class="sr-only" for="exampleInputEmail2">Email address</label>
-                                                        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="sr-only" for="exampleInputPassword2">Password</label>
-                                                        <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
-                                                        <div class="help-block text-right"><a href="">Forget the password ?</a></div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label>
-                                                        <input type="checkbox"> keep me logged-in
-                                                        </label>
-                                                    </div>
-                                            </form>
+                                    <div class="col-md-12">
+                                        Login via
+                                        <div class="social-buttons">
+                                            <a href="" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                                            <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
                                         </div>
-                                        <div class="bottom text-center">
-                                            New here ? <a href="#"><b>Join Us</b></a>
-                                        </div>
+                                        or
+                                        <form class="form" role="form" method="post" action="user_login" accept-charset="UTF-8" id="login-nav">
+                                                {% csrf_token %}    
+                                            <div class="form-group">
+                                                    <label class="sr-only" for="login_email">Email address</label>
+                                                    {{ login_form.login_email }}
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="login_password">Password</label>
+                                                    {{ login_form.login_password }}
+                                                    <div class="help-block text-right"><a href="">Forgot your password ?</a></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                    <input type="checkbox"> keep me logged-in
+                                                    </label>
+                                                </div>
+                                        </form>
+                                    </div>
+                                    <div class="bottom text-center">
+                                        New here? <a href="" data-toggle="modal" data-target="#sem-reg"><b>Join Us</b></a>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
                     </li>
+                    {% endif %}
                 </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -101,13 +113,13 @@
                             Upload
                     </button>
                     </a>
-                    
+
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <button type="button" class="btn btn-lg btn-primary btn-block dropdown-btn">
                                 Advanced <i class="fa fa-caret-down"></i>
                         </button>
                     </a>
-                    
+
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>
                             <a href="" style="text-decoration: none">
@@ -117,7 +129,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" style="text-decoration: none">
+                            <a href="/new_algorithm" style="text-decoration: none">
                                 <button type="button" class="btn-lg btn-block">
                                     New
                                 </button>
@@ -138,19 +150,19 @@
                         <form method="POST">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="Vessels" id="Vessels" name="vessels">
-                                <label class="form-check-label">Vessels</label>
+                                <label class="form-check-label" for="Vessels">Vessels</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="OpticNerve" id="OpticNerve" name="opticnerve">
-                                <label class="form-check-label">Optic Nerve</label>
+                                <label class="form-check-label" for="OpticNerve">Optic Nerve</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="Fovea" id="Fovea" name="fovea">
-                                <label class="form-check-label">Fovea</label>
+                                <label class="form-check-label" for="Fovea">Fovea</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="Lesions" id="Lesions" name="lesions">
-                                <label class="form-check-label">Lesions</label>
+                                <label class="form-check-label" for="Lesions">Lesions</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="Full" id="Full" name="full">
@@ -159,6 +171,15 @@
                             <br>
                             {% csrf_token %}
                             <input type="submit" class="btn btn-primary" value="Update" name="myform">
+                            <script>
+                                var opt0 = "{{ vessels }}"; var opt1 = "{{ opticnerve }}"; var opt2 = "{{ fovea }}"; 
+                                var opt3 = "{{ lesions }}";var opt4 = "{{ full }}";
+                                if (opt0 == "true") { $("#Vessels").prop('checked', true); } 
+                                if (opt1 == "true") { $("#OpticNerve").prop('checked', true); } 
+                                if (opt2 == "true") { $("#Fovea").prop('checked', true); } 
+                                if (opt3 == "true") { $("#Lesions").prop('checked', true); } 
+                                if (opt4 == "true") { $("#Full").prop('checked', true); } 
+                            </script>
                         </form>
                     </div>
                     <!-- /checkbox area -->
@@ -247,6 +268,69 @@
             </div>
 
         </div>
+
+        <!-- MODAL CONTAINER div -->
+        <div class="modal fade seminor-login-modal" id="sem-reg">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center">CREATE AN ACCOUNT</h4>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body seminor-login-modal-body">
+                    <form class="seminor-login-form" method="POST" action="register">
+                        {% csrf_token %}
+                        <div class="form-group">
+                                {{ registration_form.f_name }}
+                            <label class="form-control-placeholder" for="name">First Name</label>
+                        </div>
+
+                        <div class="form-group">
+                            {{ registration_form.l_name }}
+                            <label class="form-control-placeholder" for="name">Last Name</label>
+                        </div>
+
+                        <div class="form-group">
+                            {{ registration_form.email }}
+                            <label class="form-control-placeholder" for="name">Email address</label>
+                        </div>
+
+                        <div class="form-group">
+                            {{ registration_form.password }}
+                            <label class="form-control-placeholder" for="password">Password</label>
+                        </div>
+
+                        <div class="form-group">
+                            {{ registration_form.confirm_password }}
+                            <label class="form-control-placeholder" for="password">Confirm Password</label>
+                            </div>
+                    
+                        <div class="form-group forgot-pass-fau text-center ">
+                            By Clicking "SIGN UP" you accept our
+                            <a href="/terms-conditions/" class="text-secondary">
+                                <span class="text-primary-fau">Terms and Conditions</span>
+                            </a>
+                        </div>
+
+                        <div class="btn-check-log">
+                            <button type="submit" class="btn-check-login">SIGN UP</button>
+                        </div>
+                    </form>
+                </div> <!-- modal body -->
+                </div> <!-- modal content -->
+            </div> <!-- modal dialog -->
+        </div>
+        <!-- /modal container div -->
+
+        <!-- registration error div -->
+        {% csrf_token %}
+        {% if errors %}
+            <script>
+                alert('{{ errors }}');
+            </script>
+        {% endif %}
+        <!-- /registration error div -->
         
     </body>
 </html>
