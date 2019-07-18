@@ -55,4 +55,5 @@ class VesselExtractor:
 		
 		finimage = cv2.bitwise_and(fundus_eroded,fundus_eroded,mask=xmask)	
 		blood_vessels = cv2.bitwise_not(finimage)
+		
 		return blood_vessels	

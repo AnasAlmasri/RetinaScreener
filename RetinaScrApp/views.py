@@ -88,7 +88,14 @@ def user_logout(request):
 
 def diagnosis(request):
     reset_processed_image()
-    
+    diagnosis_dict = {
+        'vessels': '',
+        'opticnerve': '',
+        'fovea': '',
+        'lesions': '',
+        'full': '',
+    }
+
     if request.method == 'POST':
         options = []
         options.append(request.POST.get('vessels', False)) 
@@ -98,10 +105,15 @@ def diagnosis(request):
         options.append(request.POST.get('full', False))
         # example: [False, False, 'Fovea', 'Lesions', False]
 
+        # reset any saved processed image
         reset_processed_image()
 
         # get doctor_id and set it in diagnozer
-        diagnozer.set_doc_id(2) # doctor_id=2 as an example
+        username = None
+        if request.user.is_authenticated:
+            username = request.user.username
+            doctor = Doctor.objects.get(doc_username=username)
+            diagnozer.set_doc_id(doctor.doctor_id)
         
         if not options[0] == False: # if Vessels was checked
             input_img = cv2.imread('static/images/original.jpg')
@@ -110,6 +122,7 @@ def diagnosis(request):
             retina.set_vessel_features(vessels)
             # save processed image
             cv2.imwrite('static/images/processed.jpg', retina.vessel_features)
+            diagnosis_dict['vessels'] = 'true'
         
         if not options[1] == False: # if Optic Nerve was checked
             input_img = cv2.imread('static/images/original.jpg')
@@ -118,9 +131,10 @@ def diagnosis(request):
             retina.set_optic_nerve_features(optic_nerve)
             # save processed image
             cv2.imwrite('static/images/processed.jpg', retina.optic_nerve_features)
+            diagnosis_dict['opticnerve'] = 'true'
         
         if not options[2] == False: # if fovea was checked
-            pass
+            diagnosis_dict['fovea'] = 'true'
        
         if not options[3] == False: # if lesions was checked
             input_img = cv2.imread('static/images/original.jpg')
@@ -129,11 +143,11 @@ def diagnosis(request):
             retina.set_lesion_features(lesions)
             # save processed image
             cv2.imwrite('static/images/processed.jpg', retina.lesion_features)
+            diagnosis_dict['lesions'] = 'true'
         
         if not options[4] == False: # if 'full' was checked
-            pass
-
-    diagnosis_dict = {'vessel_src':'images/processed.jpg'}
+            diagnosis_dict['full'] = 'true'
+            
     return render(request, 'RetinaScrApp/diagnosis.html', context=diagnosis_dict)
 
 def customize_algorithm(request):
