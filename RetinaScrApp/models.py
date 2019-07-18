@@ -55,23 +55,15 @@ class Algorithm(models.Model):
     # foreign key
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, default=None)
     # other fields
-    record_date = models.DateField() # creation date
     algo_type = models.CharField(max_length=10) # vessel/optic/fovea/lesion
-    algo_status = models.CharField(max_length=10) # execution: valid/invalid
-    last_modified = models.DateField()
-    source_code = models.CharField(max_length=20000, default=None) # actual source code
+    source_code = models.CharField(max_length=200000, default=None) # actual source code
 
     def __str__(self):
-        args = (self.algo_id, '\n', self.doctor, str(self.record_date), self.algo_type,
-            self.algo_status, str(self.last_modified)
-        )
+        args = (self.algo_id, '\n', self.doctor, self.algo_type)
         return """
             algo_id: {0} 
             doctor: {1}
-            record_date: {2}
-            algo_type: {3}
-            algo_status: {4}
-            last_modified: {5}
+            algo_type: {2}
         """.format(*args) + '\n'
         
 class Diagnosis(models.Model):

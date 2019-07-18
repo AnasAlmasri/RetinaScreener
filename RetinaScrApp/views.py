@@ -180,19 +180,36 @@ def requestAjax(request):
     return JsonResponse(data)
 
 @csrf_exempt
-def compileCode(request):
+def codeEditorAjax(request):
     data = {
         'is_valid': False,
         }
     if request.is_ajax():
         message = request.POST.get('message')
-        print(message)
+        #print(message)
         if message == 'compile and run' or message == 'compile':
             source_code = request.POST.get('source_code')
             if source_code:
                 console_response = execute_code(source_code, message)
                 data.update(is_valid=True)
                 data.update(response=console_response)
+        elif message == 'save':
+            print('Save request received')
+            source_code = request.POST.get('source_code')
+            algo_type = request.POST.get('type')
+            print(algo_type)
+            if source_code:
+                replace(source_code)
+                username = None
+                if request.user.is_authenticated:
+                    username = request.user.username
+                    doctor = Doctor.objects.get(doc_username=username)
+                    algorithm = Algorithm.objects.get_or_create(
+                        doctor=doctor,
+                        algo_type=algo_type,
+                        source_code = source_code
+                    )[0]
+                    algorithm.save()
     return JsonResponse(data)
 
 def reset_processed_image():

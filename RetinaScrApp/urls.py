@@ -1,6 +1,6 @@
 from django.urls import path, include
 from RetinaScrApp import views
-from RetinaScrApp.views import requestAjax, compileCode
+from RetinaScrApp.views import requestAjax, codeEditorAjax
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -14,6 +14,6 @@ urlpatterns = [
     path('about', views.about, name='about'),
     path('contact', views.contact, name='contact'),
     path('data_ajax_request', requestAjax, name='data_ajax_request'),
-    path('code_editor_ajax_request', compileCode, name='code_editor_ajax_request'),
+    path('code_editor_ajax_request', codeEditorAjax, name='code_editor_ajax_request'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
